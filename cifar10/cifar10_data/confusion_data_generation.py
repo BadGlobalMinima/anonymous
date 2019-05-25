@@ -74,11 +74,11 @@ def load_actual_train_data_and_label(root):
     return actual_train_data, actual_train_labels
 
 
-def generate_random_data(confusion_T, zero_out_ratio):
+def generate_random_data(confusion_R, zero_out_ratio):
     root = './data'
     actual_train_data, actual_train_labels = load_actual_train_data_and_label(root)
 
-    duplicate_num = confusion_T
+    duplicate_num = confusion_R
 
     confusion_data = []
     confusion_labels = []
@@ -107,7 +107,7 @@ def generate_random_data(confusion_T, zero_out_ratio):
     print(confusion_labels[:100])
     print()
 
-    np.savez_compressed('./confusion_random_train_label/zero_out_{}_{}'.format(confusion_T, zero_out_ratio),
+    np.savez_compressed('./confusion_random_train_label/zero_out_{}_{}'.format(confusion_R, zero_out_ratio),
                         training_data=confusion_data,
                         training_label=confusion_labels)
     return
@@ -115,16 +115,16 @@ def generate_random_data(confusion_T, zero_out_ratio):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Example')
-    parser.add_argument('--T', type=int, default=10)
-    parser.add_argument('--R', type=float, default=0.1)
+    parser.add_argument('--confusion_R', type=int, default=10)
+    parser.add_argument('--zero_out_ratio', type=float, default=0.1)
     parser.add_argument('--seed', type=int, default=1)
     args = parser.parse_args()
 
-    T = args.T
-    R = args.R
+    confusion_R = args.confusion_R
+    zero_out_ratio = args.zero_out_ratio
     seed = args.seed
     np.random.seed(seed)
 
-    print('Regenerating confuion data: T={}, R={}.\nRandom seed: {}.'.format(T, R, seed))
+    print('Regenerating confuion data: confusion R={}, zero out ratio={}.\nRandom seed: {}.'.format(confusion_R, zero_out_ratio, seed))
 
-    generate_random_data(confusion_T=T, zero_out_ratio=R)
+    generate_random_data(confusion_R=confusion_R, zero_out_ratio=zero_out_ratio)
